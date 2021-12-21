@@ -1,0 +1,5 @@
+user-manager/server/node_modules
+sso-auth/server/node_modules
+To-do.md
+user-manager/server/.env
+sso-auth/server/.env
