@@ -1,24 +1,22 @@
 import React from 'react';
-import './App.css'
+import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import UserInfo from './components/UserInfo';
+import Login from './components/Login';
+import ErrorPage from './components/ErrorPage';
 
 function App() {
-    let isAccesTokenValid = false;    
-
-    const onSubmit = (e) => {
-        if(isAccesTokenValid === true) {
-            window.location.href='http://localhost:8000';
-        }
-        else{
-            window.location.href='http://localhost:3050'
-        }
-    }
-
-    return (
-        <div>
-            <button onClick={onSubmit} className="button">LOGIN</button>
-        </div>
-    )
+  return (
+    <div className='App'>
+      <Router>
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/user' element={<UserInfo />} />
+          <Route path='*' element={<ErrorPage />} />
+        </Routes>
+      </Router>
+    </div>
+  );
 }
 
-export default App
-
+export default App;
