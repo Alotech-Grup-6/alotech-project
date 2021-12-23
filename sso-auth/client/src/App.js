@@ -4,6 +4,7 @@ import React, { useState } from "react";
 var sha256 = require("js-sha256");
 
 function App() {
+  
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [hash, setHash] = useState("");
@@ -23,24 +24,27 @@ function App() {
     <div className="App">
       <form className="form" onSubmit={onSubmit}>
         <div className="input-group">
-          <label>Username</label>
           <input
             type="text"
             name="username"
-            placeholder="Username..."
+            placeholder="Username"
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
         </div>
-        <div className="input-group">
-          <label htmlFor="password">Password</label>
+        <div className="input-group-pass">
           <input
             type="password"
             name="password"
-            placeholder="Password..."
+            placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
-        <button className="primary">LOGIN</button>
+        <br />
+        <div className="butt">
+          <button className="button">LOGIN</button>
+        </div>
       </form>
     </div>
   );
