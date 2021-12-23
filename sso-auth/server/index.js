@@ -1,16 +1,25 @@
 const express = require("express")
-require('dotenv').config()
 const app = express();
+
+const cors = require('cors')
+
+require('dotenv').config()
+
+
+
+const loginRouter=require('./router/loginRouter')
 const port=process.env.PORT
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-app.get('/', (req, res) => {
-    res.send('Hello Sso-Auth')
+app.use(
+  cors({
+    origin: "*"
   })
+);
 
+app.use("/",loginRouter)
 
 
 
