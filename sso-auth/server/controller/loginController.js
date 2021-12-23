@@ -60,3 +60,13 @@ exports.login = async (req, res) => {
     }
   );
 };
+
+exports.urls = (req, res) => {
+  dbconn.query("select url from url", (err, urls) => {
+    res.status(200).json({
+      message: "All urls",
+      urls,
+    });
+  });
+};
+
