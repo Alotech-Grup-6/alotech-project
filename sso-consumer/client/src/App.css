@@ -1,37 +1,64 @@
-.button {
-  display: block;
-  margin: 100px auto;
-  align-items: center;
-  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
-  border: 0;
-  border-radius: 8px;
-  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+html {
   box-sizing: border-box;
-  color: #FFFFFF;
+  height: 100%;
+  font-size: 10px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
   display: flex;
-  font-family: Phantomsans, sans-serif;
-  font-size: 20px;
+  align-items: center;
   justify-content: center;
-  line-height: 1em;
-  max-width: 100%;
-  min-width: 140px;
-  padding: 19px 24px;
-  text-decoration: none;
-  user-select: none;
+  min-height: 100vh;
+  background: #57bd84;
+}
+
+input[type=checkbox] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+input[type=checkbox]:checked + label:after {
+  transform: scale(4.2);
+}
+
+label {
+  outline: none;
   -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  color: #000;
+  font-family: "Lato", sans-serif;
+  font-size: 2.5rem;
+  letter-spacing: 0.04rem;
+  padding: 1.5rem 3rem;
   cursor: pointer;
+  border-radius: 0.4rem;
+  border: 0.3rem solid #000;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 3px 0 0 #000;
 }
-
-.button-63:active,
-.button-63:hover {
-  outline: 0;
+label::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform: scale(0);
+  transition: transform 0.3s ease-in;
+  mix-blend-mode: difference;
+  background: radial-gradient(circle at center, #fff 24%, #000 25%, #000 100%);
 }
-
-@media (min-width: 768px) {
-  .button-63 {
-    font-size: 24px;
-    min-width: 196px;
-  }
+label:active {
+  top: 3px;
+  box-shadow: none;
 }

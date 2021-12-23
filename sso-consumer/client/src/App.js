@@ -6,7 +6,7 @@ function App() {
 
     const onSubmit = (e) => {
         if(isAccesTokenValid === true) {
-            window.location.href='http://localhost:8000';
+            window.location.pathname='http://localhost:3000/userInfo';
         }
         else{
             window.location.href='http://localhost:3050'
@@ -15,7 +15,8 @@ function App() {
 
     return (
         <div>
-            <button onClick={onSubmit} className="button">LOGIN</button>
+            <input className='button' onClick={onSubmit} type="checkbox" id="cb1" />
+            <label for="cb1">LOGIN</label>
         </div>
     )
 }
