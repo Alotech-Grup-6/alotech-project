@@ -70,3 +70,46 @@ exports.urls = (req, res) => {
   });
 };
 
+exports.isAccessTokenValid = (req, res) => {
+  const { url, token } = req.body;
+
+  if (token === undefined) {
+    res.status(200).json({
+      message: "undefined token",
+    });
+  } else {
+    dbconn.query(`select url_id from url where url='${url}'`, (err, db) => {
+      
+      const url_id = db[0].url_id;
+
+      dbconn.query(
+        `select * from token where token="${token}" and url="${url_id}"`,
+        (err, db) => {
+          if (db.length === 1) {
+            const resToken = db[0];
+            const dbToken = resToken.token;
+            const { created_at, ttl, user_id } = resToken;
+            const nowDate = new Date();
+            const dateDiff = (nowDate - created_at) / 3600000;
+
+            if (dateDiff > ttl) {
+              dbconn.query(`DELETE FROM token WHERE token="${token}"`, () => {
+                res.status(200).json({
+                  message: "out time token",
+                });
+              });
+            } else {
+              res.status(200).json({
+                message: "token Validated",
+              });
+            }
+          } else {
+            res.status(200).json({
+              message: "invalid Token",
+            });
+          }
+        }
+      );
+    });
+  }
+};
