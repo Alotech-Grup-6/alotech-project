@@ -10,3 +10,5 @@ router.route("/get-user").get(userController.getUser);
 router.route("/update-user").put(userController.updateUser);
 
 module.exports = router;
+
+

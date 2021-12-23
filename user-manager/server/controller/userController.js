@@ -11,7 +11,9 @@ exports.getListOfUsers = async (req, res) => {
   });
 };
 
+
 // Create Single User
+// username, user_name, user_surname, user_password,user_email, user_type
 exports.createUser = (req, res) => {
   const {
     username,
@@ -45,6 +47,7 @@ exports.createUser = (req, res) => {
     }
   );
 };
+
 
 // Delete single User
 exports.deleteUser = async (req, res) => {
@@ -122,3 +125,4 @@ exports.updateUser = async (req, res) => {
     }
   });
 };
+
