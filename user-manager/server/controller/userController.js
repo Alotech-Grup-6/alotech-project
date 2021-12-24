@@ -44,4 +44,4 @@ exports.createUser = (req, res) => {
   );
 };
 
-exports.deleteUser
+exports.deleteUser;

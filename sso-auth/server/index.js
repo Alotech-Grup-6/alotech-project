@@ -1,28 +1,24 @@
-const express = require("express")
+const express = require("express");
 const app = express();
 
-const cors = require('cors')
+const cors = require("cors");
 
-require('dotenv').config()
+require("dotenv").config();
 
-
-
-const loginRouter=require('./router/loginRouter')
-const port=process.env.PORT
+const loginRouter = require("./router/loginRouter");
+const port = process.env.PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: "*"
+    origin: "*",
   })
 );
 
-app.use("/",loginRouter)
+app.use("/", loginRouter);
 
-
-
-app.listen(port,()=>{
-    console.log('server started',port)
-})
+app.listen(port, () => {
+  console.log("server started", port);
+});
