@@ -11,3 +11,4 @@ let config = {
 }
 conn = mysql.createConnection(config);
 module.exports=conn
+
