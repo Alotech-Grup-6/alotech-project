@@ -11,6 +11,20 @@ exports.login = async (req, res) => {
     `select * from user where username="${username}"`,
     async (err, resUser) => {
       if (resUser.length === 0) {
+        res.status(400).json({
+          status: "Failed",
+          message: "User not found",
+        });
+      }
+      if (
+        redirectURL === "http://localhost:3110" &&
+        resUser[0].user_type !== "admin"
+      ) {
+        return res.status(401).json({
+          status: "Failed",
+          massage: "Unauthorized",
+        });
+      }
       const match = await bcrypt.compare(
         user_password,
         resUser[0].user_password
