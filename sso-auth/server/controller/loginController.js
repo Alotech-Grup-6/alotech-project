@@ -85,23 +85,12 @@ exports.login = async (req, res) => {
                     token: token,
                     expired: expired, // ****
                   });
-            }else{
-              
-              console.log("db sıfır değil ")
-              let ttl=db[0].ttl 
-              let token_id=db[0].token_id
-              ttl<50 ? ttl=50 : ttl=ttl
-              dbconn.query(`UPDATE token SET ttl ="${ttl}" WHERE token_id = "${token_id}"`)
-              dbconn.query(`select * from token where token_id="${token_id}"`,(err,token)=>{
-                res.status(200).json({
-                  message: "test",
-                  token: token[0].token
-                });
-              })
-              
+                  
+                }
+              );
             }
           }
-        );})
+        );
       }
     }
   );
@@ -118,37 +107,55 @@ exports.urls = (req, res) => {
 
 exports.isAccessTokenValid = (req, res) => {
   const { url, token } = req.body;
-
-  if (token === undefined) {
-    res.status(200).json({
-      message: "undefined token",
-    });
-  } else {
-    dbconn.query(`select url_id from url where url='${url}'`, (err, db) => {
-      
-      const url_id = db[0].url_id;
-
+  dbconn.query(`select url_id from url where url='${url}'`, (err, db) => {
+    if (db.length === 0) {
+      res.status(400).json({
+        status: "Failed",
+        message: "invalid URL",
+      });
+    } else {
       dbconn.query(
-        `select * from token where token="${token}" and url="${url_id}"`,
-        (err, db) => {
+        `select * from token  where token="${token}"`,
+        async (err, db) => {
           if (db.length === 1) {
             const resToken = db[0];
             const dbToken = resToken.token;
             const { created_at, ttl, user_id } = resToken;
             const nowDate = new Date();
-            const dateDiff = (nowDate - created_at) / 3600000;
-
-            if (dateDiff > ttl) {
-              dbconn.query(`DELETE FROM token WHERE token="${token}"`, () => {
-                res.status(200).json({
-                  message: "out time token",
-                });
-              });
-            } else {
-              res.status(200).json({
-                message: "token Validated",
-              });
-            }
+            const dateDiffmn = Math.abs(nowDate - created_at) / (1000 * 60);
+            const dateDiff = dateDiffmn >= ttl ? dateDiffmn : 0;
+            dbconn.query(
+              `select * from user where user_id="${user_id}"`,
+              (err, user) => {
+                if (
+                  url === "http://localhost:3110" &&
+                  user[0].user_type !== "admin"
+                ) {
+                  return res.status(200).json({
+                    status: "Failed",
+                    massage: "Unauthorized",
+                  });
+                }
+                console.log("dateDiff: ", dateDiff);
+                if (dateDiff >= ttl) {
+                  dbconn.query(
+                    `DELETE FROM token WHERE token="${token}"`,
+                    () => {
+                      res.status(200).json({
+                        status: "Failed",
+                        message: "out time token",
+                      });
+                    }
+                  );
+                } else {
+                  res.status(200).json({
+                    status: "Ok",
+                    message: "token Validated",
+                    
+                  });
+                }
+              }
+            );
           } else {
             res.status(200).json({
               message: "invalid Token",
@@ -156,6 +163,6 @@ exports.isAccessTokenValid = (req, res) => {
           }
         }
       );
-    });
-  }
+    }
+  });
 };
