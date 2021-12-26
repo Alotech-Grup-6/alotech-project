@@ -50,6 +50,22 @@ export default function App() {
       console.log(res.data.result);
     }
   };
+
+  const delUser = async () => {
+    const res = await axios.delete("http://localhost:3100/delete", {
+      headers: {
+        Authorization: "Bearer " + cookie,
+      },
+      data: {
+        user_id: 63,
+      },
+    });
+    if (res.data.message === "invalid token") {
+      getToken();
+    } else {
+      console.log(res.data);
+    }
+  };
   return (
   <>
   <h1>User Manager</h1>
