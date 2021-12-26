@@ -1,11 +1,13 @@
 const dbconn = require("../dbconfig");
 
+const bcrypt = require("bcrypt");
 // Get all Users
+
 exports.getListOfUsers = async (req, res) => {
   await dbconn.query("call getListOfUsers", (err, result, fields) => {
     result = result[0];
     res.status(200).json({
-      message: "Test",
+      message: "Get Users List ",
       result,
     });
   });
@@ -13,7 +15,7 @@ exports.getListOfUsers = async (req, res) => {
 
 // Create Single User
 // username, user_name, user_surname, user_password,user_email, user_type
-exports.createUser = (req, res) => {
+exports.createUser = async (req, res) => {
   const {
     username,
     user_name,
@@ -23,8 +25,10 @@ exports.createUser = (req, res) => {
     user_type,
   } = req.body;
 
+  const hashed = await bcrypt.hash(user_password, 10);
+
   dbconn.query(
-    `call createUser('${username}','${user_name}','${user_surname}','${user_password}','${user_email}','${user_type}')`,
+    `call createUser('${username}','${user_name}','${user_surname}','${hashed}','${user_email}','${user_type}')`,
     (err) => {
       if (err) {
         if ((err.code = "ER_DUP_ENTRY")) {
