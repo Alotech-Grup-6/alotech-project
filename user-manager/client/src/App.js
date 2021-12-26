@@ -66,6 +66,34 @@ export default function App() {
       console.log(res.data);
     }
   };
+
+  const createUser = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:3100/create",
+        {
+          username: "test",
+          user_name: "test",
+          user_surname: "test",
+          user_password: "test",
+          user_email: "test@test.com",
+          user_type: "admin",
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + cookie,
+          },
+        }
+      );
+      if (res.data.message === "invalid token") {
+        getToken();
+      } else {
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  };
   return (
   <>
   <h1>User Manager</h1>
