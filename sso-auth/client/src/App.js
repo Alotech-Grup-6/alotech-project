@@ -1,7 +1,9 @@
+import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import sha256 from "js-sha256";
 import Cookies from "js-cookie";
+
 
 export default function App() {
   const [userName, setUserName] = useState("");
@@ -82,27 +84,35 @@ export default function App() {
   };
 
   return (
-    <>
+    <div className="App">
       {params && (
-        <form onSubmit={handleSubmit}>
-          <label>
-            <p>Username</p>
-            <input type="text" onChange={(e) => setUserName(e.target.value)} />
-          </label>
-          <label>
-            <p>Password</p>
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="input-group">
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              onChange={(e) => setUserName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group-pass">
             <input
               type="password"
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(sha256.sha256(e.target.value))}
+              required
             />
-          </label>
-          <div>
-            <button type="submit">Submit</button>
+          </div>
+          <br />
+          <div className="butt">
+            <button className="button">LOGIN</button>
           </div>
         </form>
       )}
 
       {!params && <h1>YOU CANT SEE THİS PAGE</h1>}
-    </>
+    </div>
   );
 }

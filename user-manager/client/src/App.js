@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import AdminPage from './components/AdminPage.js';
+import './App.css';
 
 export default function App() {
   const [url, setUrl] = useState(window.location.origin);
@@ -125,8 +127,8 @@ export default function App() {
   }, []);
 
   return (
-  <>
-  <h1>User Manager</h1>
-  </>
-  )
+    <div className='App'>
+      <AdminPage />
+    </div>
+  );
 }
