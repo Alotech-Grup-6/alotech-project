@@ -22,6 +22,18 @@ export default function App() {
     }
   };
 
+  const getUserList = async () => {
+    const res = await axios.get("http://localhost:3100/get-users", {
+      headers: {
+        Authorization: "Bearer " + cookie,
+      },
+    });
+    if (res.data.message === "invalid token") {
+      getToken();
+    } else {
+      console.log(res.data.result);
+    }
+  };
   return (
   <>
   <h1>User Manager</h1>
