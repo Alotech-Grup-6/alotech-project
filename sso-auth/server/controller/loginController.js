@@ -65,12 +65,26 @@ exports.login = async (req, res) => {
                     m.getMinutes() +
                     ":" +
                     m.getSeconds();
+                  dbconn.query(`  
          INSERT INTO token (token,created_at ,ttl,url,ip,user_id)
-         VALUES ('${token}','${dateString}',${50},${url_id},'${128}',${user_id})`);
-         res.status(200).json({
-          message: "test",
-          token: token
-        });
+         VALUES ('${token}','${nowDate}',${5},${url_id},'${128}',${user_id})`);
+                  const expired =
+                    m.getFullYear() +
+                    "-" +
+                    (m.getUTCMonth() + 1) +
+                    "-" +
+                    m.getUTCDate() +
+                    " " +
+                    m.getHours() +
+                    ":" +
+                    m.getMinutes() +
+                    ":" +
+                    m.getSeconds();
+                  res.status(200).json({
+                    message: "Token Created",
+                    token: token,
+                    expired: expired, // ****
+                  });
             }else{
               
               console.log("db sıfır değil ")
