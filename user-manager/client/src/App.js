@@ -34,6 +34,22 @@ export default function App() {
       console.log(res.data.result);
     }
   };
+
+  const getUser = async () => {
+    const res = await axios.get("http://localhost:3100/get-user", {
+      headers: {
+        Authorization: "Bearer " + cookie,
+      },
+      params: {
+        user_id: 64,
+      },
+    });
+    if (res.data.message === "invalid token") {
+      getToken();
+    } else {
+      console.log(res.data.result);
+    }
+  };
   return (
   <>
   <h1>User Manager</h1>
