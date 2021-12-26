@@ -55,21 +55,25 @@ export default function App() {
   }, []);
 
   const login = async () => {
-    const res = await axios.post(
-      "http://localhost:3000/login",
-      {
-        user_name: userName,
-        user_password: password,
-      },
-      {
-        params: {
-          redirectURL: redirectURL,
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/login",
+        {
+          username: userName,
+          user_password: password,
         },
-      }
-    );
-
-    Cookies.set("token", res.data.token);
-    goToBack();
+        {
+          params: {
+            redirectURL: redirectURL,
+          },
+        }
+      );
+      console.log(res.data.ttl);
+      Cookies.set("token", res.data.token, { secure: true });
+      goToBack();
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -89,7 +93,7 @@ export default function App() {
             <p>Password</p>
             <input
               type="password"
-              onChange={(e) => setPassword(sha256.sha256(e.target.value))}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </label>
           <div>
