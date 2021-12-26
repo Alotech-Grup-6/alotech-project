@@ -10,6 +10,26 @@ export default function App() {
   const [urls, setUrls] = useState([]);
   const [params, setParams] = useState(false);
 
+  const cookie = Cookies.get("token");
+
+  const checkToken = async () => {
+    if (redirectURL !== undefined) {
+      console.log(redirectURL);
+      try {
+        const res = await axios.post("http://localhost:3000/valid-token", {
+          url: redirectURL,
+          token: cookie,
+        });
+        console.log(res.data);
+        if (res.data.message === "token Validated") {
+          await goToBack();
+        }
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    }
+  };
+
   const getParams = async () => {
     setRedirectURL(window.location.search.split("?")[1].split("=")[1]);
     urls.includes(redirectURL) ? setParams(true) : setParams(false);
@@ -21,12 +41,13 @@ export default function App() {
     setUrls(url.map((i) => i.url));
   };
 
-  const goToBack = () => {
+  const goToBack = async () => {
     window.location.href = redirectURL;
   };
 
-  useEffect(() => {
-    getParams();
+  useEffect(async () => {
+    await getParams();
+    cookie !== undefined && checkToken();
   });
 
   useEffect(() => {
