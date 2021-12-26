@@ -38,6 +38,11 @@ exports.login = async (req, res) => {
         dbconn.query(
           `select url_id from url where url="${redirectURL}"`,
           (err, url) => {
+            if (url.length === 0) {
+              res.status(400).json({
+                satus: "Failed",
+                message: "Wrong url",
+              });
             const url_id = url[0].url_id;
             const user_id = resUser[0].user_id;
             dbconn.query(`select * from token where user_id="${user_id}"`,(err,db)=>{
