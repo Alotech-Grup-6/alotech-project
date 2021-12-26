@@ -1,5 +1,6 @@
 const dbconn = require("../dbconfig");
 const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcrypt");
 
 exports.login = async (req, res) => {
   const redirectURL = req.query.redirectURL;
@@ -9,7 +10,12 @@ exports.login = async (req, res) => {
     `select * from user where username="${user_name}" and user_password="${user_password}"`,
      (err, resUser) => {
       if (resUser.length === 0) {
-        res.status(200).json({
+      const match = await bcrypt.compare(
+        user_password,
+        resUser[0].user_password
+      );
+      if (!match) {
+        res.status(401).json({
           status: "Failed",
           message: "Wrong password or username",
         });
