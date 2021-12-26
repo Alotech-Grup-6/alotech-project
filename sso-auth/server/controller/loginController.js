@@ -43,22 +43,28 @@ exports.login = async (req, res) => {
                 satus: "Failed",
                 message: "Wrong url",
               });
-            const url_id = url[0].url_id;
-            const user_id = resUser[0].user_id;
-            dbconn.query(`select * from token where user_id="${user_id}"`,(err,db)=>{
-             
-              if (db.length === 0){
-                console.log("db sıfır ")
-            const token = uuidv4();
-            const m = new Date();
-            const dateString =
-              m.getUTCFullYear() +
-              "-" +
-              (m.getUTCMonth() + 1) +
-              "-" +
-              m.getUTCDate();
-           
-            dbconn.query(`  
+            } else {
+              const url_id = url[0].url_id;
+              const user_id = resUser[0].user_id;
+              dbconn.query(
+                `select * from token where user_id="${user_id}"`, // ip adres eklenecek
+                (err, db) => {
+                  // if (db.length === 0) {
+                  console.log("db sıfır ");
+                  const token = uuidv4();
+                  const m = new Date();
+                  const nowDate =
+                    m.getFullYear() +
+                    "-" +
+                    (m.getUTCMonth() + 1) +
+                    "-" +
+                    m.getDate() +
+                    " " +
+                    m.getHours() +
+                    ":" +
+                    m.getMinutes() +
+                    ":" +
+                    m.getSeconds();
          INSERT INTO token (token,created_at ,ttl,url,ip,user_id)
          VALUES ('${token}','${dateString}',${50},${url_id},'${128}',${user_id})`);
          res.status(200).json({
