@@ -119,6 +119,11 @@ export default function App() {
       console.log(res.data);
     }
   };
+
+  useEffect(async () => {
+    cookie === undefined ? await getToken() : await checkToken();
+  }, []);
+
   return (
   <>
   <h1>User Manager</h1>
