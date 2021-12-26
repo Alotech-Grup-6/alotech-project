@@ -94,6 +94,31 @@ export default function App() {
       console.log(error.response.data.message);
     }
   };
+
+  const updateUser = async () => {
+    const res = await axios.put(
+      "http://localhost:3100/update-user",
+      {
+        user_id: 72,
+        username: "busss",
+        user_name: "busrA",
+        user_surname: "binerr",
+        user_password: "test",
+        user_email: "test1@test1.com",
+        user_type: "admin",
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + cookie,
+        },
+      }
+    );
+    if (res.data.message === "invalid token") {
+      getToken();
+    } else {
+      console.log(res.data);
+    }
+  };
   return (
   <>
   <h1>User Manager</h1>
