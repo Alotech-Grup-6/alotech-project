@@ -4,11 +4,12 @@ const bcrypt = require("bcrypt");
 
 exports.login = async (req, res) => {
   const redirectURL = req.query.redirectURL;
-  const { user_name, user_password } = req.body;
+  const { username, user_password } = req.body;
+  // console.log(req.socket)
 
   dbconn.query(
-    `select * from user where username="${user_name}" and user_password="${user_password}"`,
-     (err, resUser) => {
+    `select * from user where username="${username}"`,
+    async (err, resUser) => {
       if (resUser.length === 0) {
       const match = await bcrypt.compare(
         user_password,
