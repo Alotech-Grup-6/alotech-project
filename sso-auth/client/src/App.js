@@ -101,7 +101,7 @@ export default function App() {
               type="password"
               name="password"
               placeholder="Password"
-              onChange={(e) => setPassword(sha256.sha256(e.target.value))}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
