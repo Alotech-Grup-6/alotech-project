@@ -75,7 +75,7 @@ exports.deleteUser = async (req, res) => {
 
 // Get single User
 exports.getUser = (req, res) => {
-  const { user_id } = req.body;
+  const { user_id } = req.query;
 
   dbconn.query(`call getUserInfo('${user_id}')`, (err, result) => {
     result = result[0];
