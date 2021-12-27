@@ -8,6 +8,7 @@ export default function App() {
   const [url, setUrl] = useState(window.location.origin);
   const [isAdmin, setIsAdmin] = useState(false);
   const cookie = Cookies.get("token");
+  const [userInfo, setuserInfo] = useState([{username:"",user_name:"",user_surname:"",user_type:"",user_email:""}])
 
   const getToken = async () => {
     window.location.href = `http://localhost:3050/?redirectURL=${url}`;
@@ -33,7 +34,11 @@ export default function App() {
     if (res.data.message === "invalid token") {
       getToken();
     } else {
-      console.log(res.data.result);
+      const result= res.data.result
+      console.log(result)
+      setuserInfo(result.map((i)=> ({username:i.username,user_name:i.user_name,user_surname:i.user_surname})))
+      
+    
     }
   };
 
@@ -123,12 +128,15 @@ export default function App() {
   };
 
   useEffect(async () => {
-    cookie === undefined ? await getToken() : await checkToken();
+    cookie === undefined ? await getToken() : await checkToken()
+    getUserList()
   }, []);
 
+
+  
   return (
     <div className='App'>
-      <AdminPage />
+      <AdminPage users={userInfo} />
     </div>
   );
 }
