@@ -151,6 +151,7 @@ exports.isAccessTokenValid = (req, res) => {
                   res.status(200).json({
                     status: "Ok",
                     message: "token Validated",
+                    user_id:user_id
                     
                   });
                 }
