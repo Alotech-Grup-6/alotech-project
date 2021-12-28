@@ -119,18 +119,17 @@ exports.getUser = (req, res) => {
 };
 
 //Update single User
-exports.updateUser = async (req, res) => {
+exports.updateUser = async (req, res) =>{
   const {
     user_id,
     username,
     user_name,
     user_surname,
-    user_password,
     user_email,
     user_type,
   } = req.body;
 
-  dbconn.query(`call getUserInfo('${user_id}')`, (err, result) => {
+  dbconn.query(`call getUserInfo('${user_id}')`, async (err, result) => {
     if (err) {
       return res.status(500).json({
         message: err.sqlMessage,
@@ -139,7 +138,7 @@ exports.updateUser = async (req, res) => {
     result = result[0];
     if (result.length != 0) {
       dbconn.query(
-        `call updateUser('${user_id}','${username}','${user_name}','${user_surname}','${user_password}','${user_email}','${user_type}')`,
+        `call updateUser('${user_id}','${username}','${user_name}','${user_surname}','${user_email}','${user_type}')`,
         (err) => {
           if (err) {
             return res.status(400).json({
