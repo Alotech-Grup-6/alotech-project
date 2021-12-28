@@ -1,4 +1,4 @@
-import './UpdateUser.css';
+import './Updateuser.css';
 import '../DeleteUser/DeleteUser.css';
 import React, { useState } from 'react';
 

@@ -91,10 +91,7 @@ export default function Createuser({
           <option value="user">User</option>
         </select>
         <br />
-        <div style={{ display: "inline-flex" }}>
-          <button onClick={() => rodHandle(rod)} className="button">
-            Back
-          </button>
+        <div>
           <button className="button">ADD</button>
         </div>
       </form>

@@ -65,11 +65,11 @@ export default function App() {
         getToken();
       } else {
         const result = res.data.result;
-        console.log(result);
         setuserInfo(
           result.map((i) => ({
             user_id: i.user_id,
             username: i.username,
+            user_email:i.user_email,
             user_name: i.user_name,
             user_surname: i.user_surname,
           }))
@@ -90,7 +90,6 @@ export default function App() {
           user_id: user_id,
         },
       });
-      alert(res.data.message);
       await getUserList();
     } catch (error) {
       if (error.response.data.message === "invalid token") {
@@ -124,37 +123,50 @@ export default function App() {
       }
       alert(error.response.data.message);
     }
-  };
+  }
 
-  const updateUser = async () => {
-    const res = await axios.put(
-      "http://localhost:3100/update-user",
-      {
-        user_id: 72,
-        username: "busss",
-        user_name: "busrA",
-        user_surname: "binerr",
-        user_password: "test",
-        user_email: "test1@test1.com",
-        user_type: "admin",
-      },
-      {
-        headers: {
-          Authorization: "Bearer " + cookie,
+
+  const updateUser = async (id) => {
+
+    try {
+      const res = await axios.put(
+        "http://localhost:3100/update-user",
+        {
+          user_id: id,
+          username: inputs.username,
+          user_name: inputs.user_name,
+          user_surname:inputs.user_surname,
+          user_email: inputs.user_email,
+          user_type: option,
         },
+        {
+          headers: {
+            Authorization: "Bearer " + cookie,
+          },
+        }
+      )
+      getUserList()
+      if (res.data.message === "invalid token") {
+        getToken();
+      } else {
       }
-    );
-    if (res.data.message === "invalid token") {
-      getToken();
-    } else {
+      
+    } catch (error) {
+      alert(error.response.data.message)
     }
+    
   };
 
   const rodHandle = () => setRod((rod) => !rod);
 
   return (
     <div className="App">
-      <button onClick={() => rodHandle(rod)}>TEST</button>
+           <div className="create-user">
+        <button onClick={() => rodHandle(rod)} className="bn3637 bn37">
+          <img src="/images/create.png" className="create-img" alt="" />
+          Create User
+        </button>
+      </div>
       {rod && (
         <Createuser
           createUser={createUser}
@@ -166,7 +178,8 @@ export default function App() {
           setOption={setOption}
         />
       )}
-      {!rod && <AdminPage users={userInfo} delUser={delUser} />}
+      {!rod && <AdminPage users={userInfo} delUser={delUser} inputs={inputs} setInputs={setInputs} option={option}
+          setOption={setOption} updateUser={updateUser} />}
     </div>
   );
 }
