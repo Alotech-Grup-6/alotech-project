@@ -1,7 +1,7 @@
 import React from 'react';
 import './UserInfo.css';
 
-function UserInfo() {
+function UserInfo({userName,userSurname,userType,userEmail}) {
   return (
     <div>
       <div>
@@ -12,9 +12,10 @@ function UserInfo() {
           <div className='photo'>
             <img src='/images/avatar.png' className='card-img' alt='' />
           </div>
-          <h1>Ad Soyad</h1>
-          <p>user_email</p>
-          <p>user_type</p>
+          <h1>{userName}</h1>
+          <p>{userSurname}</p>
+          <p>{userEmail}</p>
+          <p>{userType}</p>
         </div>
       </div>
     </div>

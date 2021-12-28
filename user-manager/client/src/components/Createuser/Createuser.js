@@ -1,10 +1,14 @@
 import "./Createuser.css";
-import React, { useState } from "react";
 
-export default function Createuser() {
-  const [inputs, setInputs] = useState("");
-  const [option, setOption] = useState("Admin");
-
+export default function Createuser({
+  createUser,
+  rod,
+  rodHandle,
+  inputs,
+  setInputs,
+  option,
+  setOption,
+}) {
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -12,7 +16,7 @@ export default function Createuser() {
   };
 
   const onSubmit = (event) => {
-    event.preventDefault();
+    createUser();
   };
 
   const onChange = (event) => {
@@ -57,7 +61,7 @@ export default function Createuser() {
         </div>
         <div className="input-group-email">
           <input
-            type="text"
+            type="email"
             name="user_email"
             placeholder="Email"
             value={inputs.user_email || ""}
@@ -75,16 +79,7 @@ export default function Createuser() {
             required
           />
         </div>
-        <div className="input-group-pass">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={inputs.password || ""}
-            onChange={handleChange}
-            required
-          />
-        </div>
+
         <br />
         <select
           value={option}
@@ -96,7 +91,10 @@ export default function Createuser() {
           <option value="user">User</option>
         </select>
         <br />
-        <div>
+        <div style={{ display: "inline-flex" }}>
+          <button onClick={() => rodHandle(rod)} className="button">
+            Back
+          </button>
           <button className="button">ADD</button>
         </div>
       </form>

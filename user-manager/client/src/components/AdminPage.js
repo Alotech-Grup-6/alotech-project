@@ -1,9 +1,11 @@
+
+
 import React, { useState } from 'react';
 import DeleteUser from './DeleteUser/DeleteUser.js';
 import './AdminPage.css';
 import UpdateUser from './UpdateUser/UpdateUser.js';
 
-function AdminPage() {
+function AdminPage({ users, delUser }) {
   const [deletePopUp, setDeletePopUp] = useState(false);
   const [updatePopUp, setUpdatePopUp] = useState(false);
 
@@ -24,11 +26,40 @@ function AdminPage() {
     setOption(event.target.value);
   };
 
+
   return (
     <div>
       <div>
-        <h1 className='title'>Welcome to Admin Page</h1>
+        <h1 className="title">Welcome to Admin Page</h1>
       </div>
+
+
+      <div className="cards">
+        {users.map((user) => (
+          <div key={user.user_id} className="card">
+            <div className="card-body">
+              <div className="photo">
+                <img src="/images/avatar.png" className="card-img" alt="" />
+              </div>
+              {user.user_id}
+              <h1>{user.username}</h1>
+              <p>{user.user_name}</p>
+              <p>{user.user_surname}</p>
+              <div className="buttons">
+                <button
+                  className="bn632-hover bn24"
+                  onClick={() => {
+                    delUser(user.user_id);
+                  }}
+                >
+                  Delete
+                </button>
+                <button className="bn632-hover bn24">Update</button>
+              </div>
+            </div>
+          </div>
+        ))}
+
       <div className='create-user'>
         <button className='bn3637 bn37'>
           <img src='/images/create.png' className='create-img' alt='' />
@@ -144,175 +175,8 @@ function AdminPage() {
             </div>
           </div>
         </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
+        <
 
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='photo'>
-              <img src='/images/avatar.png' className='card-img' alt='' />
-            </div>
-            <h1>Ad Soyad</h1>
-            <p>user_email</p>
-            <p>user_type</p>
-            <div className='buttons'>
-              <button className='bn632-hover bn24'>Delete</button>
-              <button className='bn632-hover bn24'>Update</button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
