@@ -1,8 +1,7 @@
-import './UpdateUser.css';
-import '../DeleteUser/DeleteUser.css';
-import React, { useState } from 'react';
+import React from 'react';
+import './DeleteUser.css';
 
-function UpdateUser(props) {
+function DeleteUser(props) {
   return props.trigger ? (
     <div className='delete-user'>
       <div className='delete-user-inner'>
@@ -22,4 +21,4 @@ function UpdateUser(props) {
   );
 }
 
-export default UpdateUser;
+export default DeleteUser;
