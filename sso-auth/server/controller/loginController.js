@@ -22,7 +22,7 @@ exports.login = async (req, res) => {
       ) {
         return res.status(401).json({
           status: "Failed",
-          massage: "Unauthorized",
+          message: "Unauthorized",
         });
       }
       const match = await bcrypt.compare(
@@ -68,24 +68,10 @@ exports.login = async (req, res) => {
                   dbconn.query(`  
          INSERT INTO token (token,created_at ,ttl,url,ip,user_id)
          VALUES ('${token}','${nowDate}',${5},${url_id},'${128}',${user_id})`);
-                  const expired =
-                    m.getFullYear() +
-                    "-" +
-                    (m.getUTCMonth() + 1) +
-                    "-" +
-                    m.getUTCDate() +
-                    " " +
-                    m.getHours() +
-                    ":" +
-                    m.getMinutes() +
-                    ":" +
-                    m.getSeconds();
                   res.status(200).json({
                     message: "Token Created",
                     token: token,
-                    expired: expired, // ****
                   });
-                  
                 }
               );
             }
@@ -131,9 +117,9 @@ exports.isAccessTokenValid = (req, res) => {
                   url === "http://localhost:3110" &&
                   user[0].user_type !== "admin"
                 ) {
-                  return res.status(200).json({
+                  return res.status(400).json({
                     status: "Failed",
-                    massage: "Unauthorized",
+                    message: "Unauthorized",
                   });
                 }
                 console.log("dateDiff: ", dateDiff);
@@ -141,7 +127,7 @@ exports.isAccessTokenValid = (req, res) => {
                   dbconn.query(
                     `DELETE FROM token WHERE token="${token}"`,
                     () => {
-                      res.status(200).json({
+                      res.status(400).json({
                         status: "Failed",
                         message: "out time token",
                       });
@@ -151,14 +137,13 @@ exports.isAccessTokenValid = (req, res) => {
                   res.status(200).json({
                     status: "Ok",
                     message: "token Validated",
-                    user_id:user_id
-                    
+                    user_id: user_id,
                   });
                 }
               }
             );
           } else {
-            res.status(200).json({
+            res.status(400).json({
               message: "invalid Token",
             });
           }
