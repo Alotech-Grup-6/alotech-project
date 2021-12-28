@@ -11,7 +11,7 @@ exports.login = async (req, res) => {
     `select * from user where username="${username}"`,
     async (err, resUser) => {
       if (resUser.length === 0) {
-        res.status(400).json({
+        return res.status(400).json({
           status: "Failed",
           message: "User not found",
         });
@@ -117,7 +117,7 @@ exports.isAccessTokenValid = (req, res) => {
                   url === "http://localhost:3110" &&
                   user[0].user_type !== "admin"
                 ) {
-                  return res.status(400).json({
+                  return res.status(401).json({
                     status: "Failed",
                     message: "Unauthorized",
                   });
