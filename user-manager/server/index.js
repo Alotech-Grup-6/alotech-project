@@ -1,4 +1,5 @@
 const express = require("express");
+
 const log4js = require("log4js");
 const dbconn = require("./dbconfig");
 
@@ -8,7 +9,6 @@ const app = express();
 const port = process.env.PORT;
 
 const userRouter = require("./router/userRouter");
-const { json } = require("express");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,6 +18,7 @@ app.use(
     origin: "*",
   })
 );
+
 
 const logger = log4js.getLogger();
 
