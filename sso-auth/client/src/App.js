@@ -1,9 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import sha256 from "js-sha256";
 import Cookies from "js-cookie";
-
 
 export default function App() {
   const [userName, setUserName] = useState("");
@@ -15,19 +13,17 @@ export default function App() {
   const cookie = Cookies.get("token");
 
   const checkToken = async () => {
-    if (redirectURL !== undefined) {
-      console.log(redirectURL);
+    if (redirectURL !== undefined && urls.length!==0) {
       try {
         const res = await axios.post("http://localhost:3000/valid-token", {
           url: redirectURL,
           token: cookie,
         });
-        console.log(res.data);
         if (res.data.message === "token Validated") {
-          await goToBack();
+           goToBack();
         }
       } catch (error) {
-        console.log(error.response.data);
+        alert(error.response.data.message);
       }
     }
   };
@@ -38,19 +34,24 @@ export default function App() {
   };
 
   const getUrl = async () => {
-    const res = await axios.get("http://localhost:3000/urls");
-    const url = res.data.urls;
-    setUrls(url.map((i) => i.url));
+    try {
+      const res = await axios.get("http://localhost:3000/urls");
+      const url = res.data.urls;
+      setUrls(url.map((i) => i.url));
+    } catch (error) {
+      alert(error.response.data);
+    }
   };
 
   const goToBack = async () => {
     window.location.href = redirectURL;
   };
 
-  useEffect(async () => {
-    await getParams();
+  useEffect(() => {
+    getParams();
     cookie !== undefined && checkToken();
-  });
+    
+  }, [cookie, urls]);
 
   useEffect(() => {
     getUrl();
@@ -70,11 +71,10 @@ export default function App() {
           },
         }
       );
-      console.log(res.data.ttl);
       Cookies.set("token", res.data.token, { secure: true });
       goToBack();
     } catch (error) {
-      console.log(error.response.data.message);
+      alert(error.response.data.message);
     }
   };
 
@@ -86,8 +86,8 @@ export default function App() {
   return (
     <div className="App">
       {params && (
-        <form className="form" onSubmit={handleSubmit}>
-          <div className="input-group">
+        <form style={{ background: "#57bd84" }} onSubmit={handleSubmit}>
+          <div>
             <input
               type="text"
               name="username"
@@ -106,13 +106,15 @@ export default function App() {
             />
           </div>
           <br />
-          <div className="butt">
+          <div>
             <button className="button">LOGIN</button>
           </div>
         </form>
       )}
 
-      {!params && <h1>YOU CANT SEE THİS PAGE</h1>}
+      {!params && (
+        <h1 style={{ background: "#57bd84" }}>YOU CANT SEE THİS PAGE</h1>
+      )}
     </div>
   );
 }

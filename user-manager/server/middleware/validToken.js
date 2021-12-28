@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
       token: token,
     });
     if (valid.data.message !== "token Validated") {
-      res.status(200).json({
+      res.status(400).json({
         status: "failed",
         message: "invalid token",
       });
@@ -18,9 +18,12 @@ module.exports = async (req, res, next) => {
       next();
     }
   } catch (error) {
-    res.status(200).json({
-      status: "failed",
-      message: "invalid tokenn",
-    });
+    if (valid.data.message !== "token Validated") {
+      res.status(400).json({
+        status: "failed",
+        message: "invalid token",
+        err: error,
+      });
+    }
   }
 };

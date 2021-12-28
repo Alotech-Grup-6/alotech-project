@@ -1,90 +1,116 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AdminPage from './components/AdminPage.js';
-import './App.css';
+import AdminPage from "./components/AdminPage.js";
+import Createuser from "./components/Createuser/Createuser";
+import "./App.css";
 
 export default function App() {
-  const [url, setUrl] = useState(window.location.origin);
-  const [isAdmin, setIsAdmin] = useState(false);
   const cookie = Cookies.get("token");
-  const [userInfo, setuserInfo] = useState([{username:"",user_name:"",user_surname:"",user_type:"",user_email:""}])
+  const url = window.location.origin;
+  const [userInfo, setuserInfo] = useState([
+    {
+      user_id: "",
+      username: "",
+      user_name: "",
+      user_surname: "",
+      user_type: "",
+      user_email: "",
+    },
+  ]);
+  const [inputs, setInputs] = useState({
+    username: "",
+    user_name: "",
+    user_surname: "",
+    user_password: "",
+    user_email: "",
+  });
+  const [option, setOption] = useState("admin");
+  const [rod, setRod] = useState(false);
 
   const getToken = async () => {
-    window.location.href = `http://localhost:3050/?redirectURL=${url}`;
+    try {
+      window.location.href = `http://localhost:3050/?redirectURL=${url}`;
+    } catch (error) {
+      alert(error.response.data.message);
+    }
   };
 
   const checkToken = async () => {
-    const res = await axios.post("http://localhost:3000/valid-token", {
-      url: url,
-      token: cookie,
-    });
-    res.data.type === "admin" ? setIsAdmin(true) : setIsAdmin(false);
-    if (res.data.message !== "token Validated") {
+    try {
+      const res = await axios.post("http://localhost:3000/valid-token", {
+        url: url,
+        token: cookie,
+      });
+      if (res.data.message !== "token Validated") {
+      }
+    } catch (error) {
       await getToken();
     }
   };
 
+  useEffect(async () => {
+    cookie === undefined ? await getToken() : await checkToken();
+    await getUserList();
+  }, [rod]);
+
   const getUserList = async () => {
-    const res = await axios.get("http://localhost:3100/get-users", {
-      headers: {
-        Authorization: "Bearer " + cookie,
-      },
-    });
-    if (res.data.message === "invalid token") {
-      getToken();
-    } else {
-      const result= res.data.result
-      console.log(result)
-      setuserInfo(result.map((i)=> ({username:i.username,user_name:i.user_name,user_surname:i.user_surname})))
-      
-    
+    try {
+      const res = await axios.get("http://localhost:3100/get-users", {
+        headers: {
+          Authorization: "Bearer " + cookie,
+        },
+      });
+      if (res.data.message === "invalid token") {
+        getToken();
+      } else {
+        const result = res.data.result;
+        console.log(result);
+        setuserInfo(
+          result.map((i) => ({
+            user_id: i.user_id,
+            username: i.username,
+            user_name: i.user_name,
+            user_surname: i.user_surname,
+          }))
+        );
+      }
+    } catch (error) {
+      alert(error.response.data.message);
     }
   };
 
-  const getUser = async () => {
-    const res = await axios.get("http://localhost:3100/get-user", {
-      headers: {
-        Authorization: "Bearer " + cookie,
-      },
-      params: {
-        user_id: 64,
-      },
-    });
-    if (res.data.message === "invalid token") {
-      getToken();
-    } else {
-      console.log(res.data.result);
-    }
-  };
-
-  const delUser = async () => {
-    const res = await axios.delete("http://localhost:3100/delete", {
-      headers: {
-        Authorization: "Bearer " + cookie,
-      },
-      data: {
-        user_id: 63,
-      },
-    });
-    if (res.data.message === "invalid token") {
-      getToken();
-    } else {
-      console.log(res.data);
+  const delUser = async (user_id) => {
+    try {
+      const res = await axios.delete("http://localhost:3100/delete", {
+        headers: {
+          Authorization: "Bearer " + cookie,
+        },
+        data: {
+          user_id: user_id,
+        },
+      });
+      alert(res.data.message);
+      await getUserList();
+    } catch (error) {
+      if (error.response.data.message === "invalid token") {
+        getToken();
+      }
+      alert(error.response.data.message);
     }
   };
 
   const createUser = async () => {
     try {
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:3100/create",
         {
-          username: "test",
-          user_name: "test",
-          user_surname: "test",
-          user_password: "test",
-          user_email: "test@test.com",
-          user_type: "admin",
+          username: inputs.username,
+          user_name: inputs.user_name,
+          user_surname: inputs.user_surname,
+          user_password: inputs.user_password,
+          user_email: inputs.user_email,
+          user_type: option,
         },
         {
           headers: {
@@ -92,13 +118,11 @@ export default function App() {
           },
         }
       );
-      if (res.data.message === "invalid token") {
-        getToken();
-      } else {
-        console.log(res.data);
-      }
     } catch (error) {
-      console.log(error.response.data.message);
+      if (error.response.data.message === "invalid token") {
+        getToken();
+      }
+      alert(error.response.data.message);
     }
   };
 
@@ -123,20 +147,26 @@ export default function App() {
     if (res.data.message === "invalid token") {
       getToken();
     } else {
-      console.log(res.data);
     }
   };
 
-  useEffect(async () => {
-    cookie === undefined ? await getToken() : await checkToken()
-    getUserList()
-  }, []);
+  const rodHandle = () => setRod((rod) => !rod);
 
-
-  
   return (
-    <div className='App'>
-      <AdminPage users={userInfo} />
+    <div className="App">
+      <button onClick={() => rodHandle(rod)}>TEST</button>
+      {rod && (
+        <Createuser
+          createUser={createUser}
+          rod={rod}
+          rodHandle={rodHandle}
+          inputs={inputs}
+          setInputs={setInputs}
+          option={option}
+          setOption={setOption}
+        />
+      )}
+      {!rod && <AdminPage users={userInfo} delUser={delUser} />}
     </div>
   );
 }

@@ -4,7 +4,13 @@ const bcrypt = require("bcrypt");
 // Get all Users
 
 exports.getListOfUsers = async (req, res) => {
-  await dbconn.query("call getListOfUsers", (err, result, fields) => {
+  dbconn.query("call getListOfUsers", (err, result, fields) => {
+    if (err) {
+      return res.status(500).json({
+        message: err.sqlMessage,
+      });
+    }
+
     result = result[0];
     res.status(200).json({
       message: "Get Users List ",
@@ -31,15 +37,18 @@ exports.createUser = async (req, res) => {
     `call createUser('${username}','${user_name}','${user_surname}','${hashed}','${user_email}','${user_type}')`,
     (err) => {
       if (err) {
-        if ((err.code = "ER_DUP_ENTRY")) {
-          return res.status(400).json({
-            message: "Uniqelik Değeri",
-          });
-        }
+        return res.status(400).json({
+          message: err.sqlMessage,
+        });
       }
       dbconn.query(
         "SELECT * FROM user ORDER BY user_id DESC LIMIT 1",
         (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              message: err.sqlMessage,
+            });
+          }
           res.status(201).json({
             status: "successful",
             message: "User Created",
@@ -55,10 +64,20 @@ exports.createUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   const { user_id } = req.body;
 
-  await dbconn.query(`call getUserInfo('${user_id}')`, (err, result) => {
+  dbconn.query(`call getUserInfo('${user_id}')`, (err, result) => {
+    if (err) {
+      return res.status(500).json({
+        message: err.sqlMessage,
+      });
+    }
     result = result[0];
     if (result.length != 0) {
       dbconn.query(`call deleteUser('${user_id}')`, (err) => {
+        if (err) {
+          return res.status(500).json({
+            message: err.sqlMessage,
+          });
+        }
         res.status(200).json({
           status: "successful",
           message: "Deleted",
@@ -78,6 +97,11 @@ exports.getUser = (req, res) => {
   const { user_id } = req.query;
 
   dbconn.query(`call getUserInfo('${user_id}')`, (err, result) => {
+    if (err) {
+      return res.status(500).json({
+        message: err.sqlMessage,
+      });
+    }
     result = result[0];
     if (result.length != 0) {
       res.status(200).json({
@@ -106,13 +130,22 @@ exports.updateUser = async (req, res) => {
     user_type,
   } = req.body;
 
-  await dbconn.query(`call getUserInfo('${user_id}')`, (err, result) => {
+  dbconn.query(`call getUserInfo('${user_id}')`, (err, result) => {
+    if (err) {
+      return res.status(500).json({
+        message: err.sqlMessage,
+      });
+    }
     result = result[0];
     if (result.length != 0) {
       dbconn.query(
         `call updateUser('${user_id}','${username}','${user_name}','${user_surname}','${user_password}','${user_email}','${user_type}')`,
         (err) => {
-          if (err) throw err;
+          if (err) {
+            return res.status(400).json({
+              message: err.sqlMessage,
+            });
+          }
           res.status(200).json({
             status: "successful",
             message: "Updated",
