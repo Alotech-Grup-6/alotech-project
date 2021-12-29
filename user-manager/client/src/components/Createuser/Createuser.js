@@ -72,9 +72,9 @@ export default function Createuser({
         <div className="input-group-pass">
           <input
             type="password"
-            name="password"
+            name="user_password"
             placeholder="Password"
-            value={inputs.password || ""}
+            value={inputs.user_password || ""}
             onChange={handleChange}
             required
           />

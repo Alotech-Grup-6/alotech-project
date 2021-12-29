@@ -23,7 +23,6 @@ export default function App() {
            goToBack();
         }
       } catch (error) {
-        alert(error.response.data.message);
       }
     }
   };
