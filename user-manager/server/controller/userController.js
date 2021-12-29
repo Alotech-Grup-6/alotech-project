@@ -10,7 +10,6 @@ exports.getListOfUsers = async (req, res) => {
         message: err.sqlMessage,
       });
     }
-
     result = result[0];
     res.status(200).json({
       message: "Get Users List ",
@@ -20,7 +19,6 @@ exports.getListOfUsers = async (req, res) => {
 };
 
 // Create Single User
-// username, user_name, user_surname, user_password,user_email, user_type
 exports.createUser = async (req, res) => {
   const {
     username,
@@ -119,15 +117,9 @@ exports.getUser = (req, res) => {
 };
 
 //Update single User
-exports.updateUser = async (req, res) =>{
-  const {
-    user_id,
-    username,
-    user_name,
-    user_surname,
-    user_email,
-    user_type,
-  } = req.body;
+exports.updateUser = async (req, res) => {
+  const { user_id, username, user_name, user_surname, user_email, user_type } =
+    req.body;
 
   dbconn.query(`call getUserInfo('${user_id}')`, async (err, result) => {
     if (err) {
