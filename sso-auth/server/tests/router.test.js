@@ -16,7 +16,7 @@ describe("CRUD Operations Tests", () => {
     const response = await request(app)
       .post("/login")
       .send({
-        username: "Emre",
+        username: "admin",
         user_password: "test",
       })
       .query({ redirectURL: "http://localhost:3020" });
@@ -29,7 +29,7 @@ describe("CRUD Operations Tests", () => {
     const response = await request(app)
       .post("/login")
       .send({
-        username: "test",
+        username: "user",
         user_password: "test",
       })
       .query({ redirectURL: "http://localhost:3020" });
@@ -54,7 +54,7 @@ describe("CRUD Operations Tests", () => {
     const response = await request(app)
       .post("/login")
       .send({
-        username: "test",
+        username: "user",
         user_password: "test",
       })
       .query({ redirectURL: "http://localhost:3110" });
@@ -63,7 +63,7 @@ describe("CRUD Operations Tests", () => {
   // redirect url doen't exist
   test("responds to /login", async () => {
     const response = await request(app).post("/login").send({
-      username: "Emre",
+      username: "admin",
       user_password: "test",
     });
     expect(response.statusCode).toBe(400);
@@ -74,7 +74,7 @@ describe("CRUD Operations Tests", () => {
     const response = await request(app)
       .post("/login")
       .send({
-        username: "Emre",
+        username: "admin",
         user_password: "asdasd",
       })
       .query({ redirectURL: "http://localhost:3020" });
