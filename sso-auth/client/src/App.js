@@ -10,28 +10,9 @@ export default function App() {
   const [urls, setUrls] = useState([]);
   const [params, setParams] = useState(false);
 
+  // Get cookie
   const cookie = Cookies.get("token");
-
-  const checkToken = async () => {
-    if (redirectURL !== undefined && urls.length!==0) {
-      try {
-        const res = await axios.post("http://localhost:3000/valid-token", {
-          url: redirectURL,
-          token: cookie,
-        });
-        if (res.data.message === "token Validated") {
-           goToBack();
-        }
-      } catch (error) {
-      }
-    }
-  };
-
-  const getParams = async () => {
-    setRedirectURL(window.location.search.split("?")[1].split("=")[1]);
-    urls.includes(redirectURL) ? setParams(true) : setParams(false);
-  };
-
+  // Get all urls in db
   const getUrl = async () => {
     try {
       const res = await axios.get("http://localhost:3000/urls");
@@ -42,20 +23,40 @@ export default function App() {
     }
   };
 
+  // Set redirect url from window location
+  const getParams = async () => {
+    setRedirectURL(window.location.search.split("?")[1].split("=")[1]);
+    urls.includes(redirectURL) ? setParams(true) : setParams(false);
+  };
   const goToBack = async () => {
     window.location.href = redirectURL;
+  };
+
+  // Check token if token is existing.
+  const checkToken = async () => {
+    if (redirectURL !== undefined && urls.length !== 0) {
+      try {
+        const res = await axios.post("http://localhost:3000/valid-token", {
+          url: redirectURL,
+          token: cookie,
+        });
+        // if token validate go to redirect url
+        if (res.data.message === "token Validated") {
+          goToBack();
+        }
+      } catch (error) {}
+    }
   };
 
   useEffect(() => {
     getParams();
     cookie !== undefined && checkToken();
-    
   }, [cookie, urls]);
 
   useEffect(() => {
     getUrl();
   }, []);
-
+  // Login func
   const login = async () => {
     try {
       const res = await axios.post(

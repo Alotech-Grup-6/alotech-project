@@ -1,6 +1,7 @@
 let mysql = require('mysql');
 require('dotenv').config()
 
+// Define db info 
 
 let config = {
     host    : process.env.HOST,
@@ -9,6 +10,7 @@ let config = {
     database: process.env.DATABASE
   
 }
+// Connect db
 conn = mysql.createConnection(config);
 module.exports=conn
 

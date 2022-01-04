@@ -28,6 +28,7 @@ export default function App() {
   const [option, setOption] = useState("admin");
   const [rod, setRod] = useState(false);
 
+  // go to login page if token is not existing
   const getToken = async () => {
     try {
       window.location.href = `http://localhost:3050/?redirectURL=${url}`;
@@ -35,13 +36,14 @@ export default function App() {
       alert(error.response.data.message);
     }
   };
-
+  // Check token if token is existing
   const checkToken = async () => {
     try {
       const res = await axios.post("http://localhost:3000/valid-token", {
         url: url,
         token: cookie,
       });
+      //go to login page if token is validate
       if (res.data.message !== "token Validated") {
       }
     } catch (error) {
@@ -54,6 +56,7 @@ export default function App() {
     await getUserList();
   }, [rod]);
 
+  // Get all user list 
   const getUserList = async () => {
     try {
       const res = await axios.get("http://localhost:3100/get-users", {
@@ -79,7 +82,7 @@ export default function App() {
       alert(error.response.data.message);
     }
   };
-
+  // Delete user by user_id
   const delUser = async (user_id) => {
     try {
       const res = await axios.delete("http://localhost:3100/delete", {
@@ -98,7 +101,7 @@ export default function App() {
       alert(error.response.data.message);
     }
   };
-
+  // Create new user 
   const createUser = async () => {
     try {
       await axios.post(
@@ -125,7 +128,7 @@ export default function App() {
     }
   }
 
-
+  // Update a user
   const updateUser = async (id) => {
 
     try {
@@ -156,7 +159,6 @@ export default function App() {
     }
     
   };
-
   const rodHandle = () => setRod((rod) => !rod);
 
   return (

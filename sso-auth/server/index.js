@@ -1,12 +1,15 @@
 const express = require("express");
 
-const app = express();
-
 const cors = require("cors");
 const logger = require("./dblogger");
-require("dotenv").config();
 
 const loginRouter = require("./router/loginRouter");
+
+
+const app = express();
+// .env config
+require("dotenv").config();
+// Define port 
 const port = process.env.PORT;
 
 app.use(express.json());
@@ -17,7 +20,7 @@ app.use(
     origin: "*",
   })
 );
-
+// Logger middleware
 app.use(logger);
 
 app.use("/", loginRouter);
