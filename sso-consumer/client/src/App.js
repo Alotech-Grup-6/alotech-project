@@ -15,6 +15,7 @@ export default function App() {
 
   const cookie = Cookies.get("token");
 
+  // Get user info 
   const getUser = async () => {
     try {
       if (userId !== undefined) {
@@ -42,11 +43,11 @@ export default function App() {
       alert(error.response.data.message);
     }
   };
-
+    // go to login page if token is not existing
   const getToken = async () => {
     window.location.href = `http://localhost:3050/?redirectURL=${url}`;
   };
-
+  // Check token if token is existing
   const checkToken = async () => {
     try {
       const res = await axios.post("http://localhost:3000/valid-token", {
